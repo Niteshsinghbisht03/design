@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: tile-studio-pro
+    env: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    region: oregon
+    autoDeploy: true
+    envVars:
+      - key: PORT
+        value: 10000
+      - key: HOST
+        value: 0.0.0.0

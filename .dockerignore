@@ -1,0 +1,15 @@
+node_modules
+frontend/node_modules
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.git
+.github
+.vscode
+.idea
+scratch
+.venv
+venv
+ENV
+*.log

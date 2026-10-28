@@ -1,0 +1,362 @@
+[
+  {
+    "id": "mat_01",
+    "name": "Material 01",
+    "file": "1786441291952-p9dws.jpg",
+    "url": "/static/materials/1786441291952-p9dws.jpg",
+    "thumbnailUrl": "/static/materials/1786441291952-p9dws.jpg",
+    "dimensions": "250 x 250 x 22 mm",
+    "type": "Photographic Mineral Scan"
+  },
+  {
+    "id": "mat_02",
+    "name": "Material 02",
+    "file": "1792583808336-1vopu7.jpg",
+    "url": "/static/materials/1792583808336-1vopu7.jpg",
+    "thumbnailUrl": "/static/materials/1792583808336-1vopu7.jpg",
+    "dimensions": "250 x 250 x 22 mm",
+    "type": "Photographic Mineral Scan"
+  },
+  {
+    "id": "mat_03",
+    "name": "Material 03",
+    "file": "1792583823986-37duvh.jpg",
+    "url": "/static/materials/1792583823986-37duvh.jpg",
+    "thumbnailUrl": "/static/materials/1792583823986-37duvh.jpg",
+    "dimensions": "250 x 250 x 22 mm",
+    "type": "Photographic Mineral Scan"
+  },
+  {
+    "id": "mat_04",
+    "name": "Material 04",
+    "file": "1792583844836-j5pix.jpg",
+    "url": "/static/materials/1792583844836-j5pix.jpg",
+    "thumbnailUrl": "/static/materials/1792583844836-j5pix.jpg",
+    "dimensions": "250 x 250 x 22 mm",
+    "type": "Photographic Mineral Scan"
+  },
+  {
+    "id": "mat_05",
+    "name": "Material 05",
+    "file": "1792583862618-e6wwld.jpg",
+    "url": "/static/materials/1792583862618-e6wwld.jpg",
+    "thumbnailUrl": "/static/materials/1792583862618-e6wwld.jpg",
+    "dimensions": "250 x 250 x 22 mm",
+    "type": "Photographic Mineral Scan"
+  },
+  {
+    "id": "mat_06",
+    "name": "Material 06",
+    "file": "1792583886285-er31u2.jpg",
+    "url": "/static/materials/1792583886285-er31u2.jpg",
+    "thumbnailUrl": "/static/materials/1792583886285-er31u2.jpg",
+    "dimensions": "250 x 250 x 22 mm",
+    "type": "Photographic Mineral Scan"
+  },
+  {
+    "id": "mat_07",
+    "name": "Material 07",
+    "file": "1792583914768-oqvu9a.jpg",
+    "url": "/static/materials/1792583914768-oqvu9a.jpg",
+    "thumbnailUrl": "/static/materials/1792583914768-oqvu9a.jpg",
+    "dimensions": "250 x 250 x 22 mm",
+    "type": "Photographic Mineral Scan"
+  },
+  {
+    "id": "mat_08",
+    "name": "Material 08",
+    "file": "1792583936668-vnyuea.jpg",
+    "url": "/static/materials/1792583936668-vnyuea.jpg",
+    "thumbnailUrl": "/static/materials/1792583936668-vnyuea.jpg",
+    "dimensions": "250 x 250 x 22 mm",
+    "type": "Photographic Mineral Scan"
+  },
+  {
+    "id": "mat_09",
+    "name": "Material 09",
+    "file": "1792583951435-e64vfn.jpg",
+    "url": "/static/materials/1792583951435-e64vfn.jpg",
+    "thumbnailUrl": "/static/materials/1792583951435-e64vfn.jpg",
+    "dimensions": "250 x 250 x 22 mm",
+    "type": "Photographic Mineral Scan"
+  },
+  {
+    "id": "mat_10",
+    "name": "Material 10",
+    "file": "1792583964651-8zo4zd.jpg",
+    "url": "/static/materials/1792583964651-8zo4zd.jpg",
+    "thumbnailUrl": "/static/materials/1792583964651-8zo4zd.jpg",
+    "dimensions": "250 x 250 x 22 mm",
+    "type": "Photographic Mineral Scan"
+  },
+  {
+    "id": "mat_11",
+    "name": "Material 11",
+    "file": "1792583977002-5htpoi.jpg",
+    "url": "/static/materials/1792583977002-5htpoi.jpg",
+    "thumbnailUrl": "/static/materials/1792583977002-5htpoi.jpg",
+    "dimensions": "250 x 250 x 22 mm",
+    "type": "Photographic Mineral Scan"
+  },
+  {
+    "id": "mat_12",
+    "name": "Material 12",
+    "file": "1792583997168-l6s0g.jpg",
+    "url": "/static/materials/1792583997168-l6s0g.jpg",
+    "thumbnailUrl": "/static/materials/1792583997168-l6s0g.jpg",
+    "dimensions": "250 x 250 x 22 mm",
+    "type": "Photographic Mineral Scan"
+  },
+  {
+    "id": "mat_13",
+    "name": "Material 13",
+    "file": "1792584009202-bgwq2f.jpg",
+    "url": "/static/materials/1792584009202-bgwq2f.jpg",
+    "thumbnailUrl": "/static/materials/1792584009202-bgwq2f.jpg",
+    "dimensions": "250 x 250 x 22 mm",
+    "type": "Photographic Mineral Scan"
+  },
+  {
+    "id": "mat_14",
+    "name": "Material 14",
+    "file": "1792584023683-uy2g8h.jpg",
+    "url": "/static/materials/1792584023683-uy2g8h.jpg",
+    "thumbnailUrl": "/static/materials/1792584023683-uy2g8h.jpg",
+    "dimensions": "250 x 250 x 22 mm",
+    "type": "Photographic Mineral Scan"
+  },
+  {
+    "id": "mat_15",
+    "name": "Material 15",
+    "file": "1792584037017-jtsalw.jpg",
+    "url": "/static/materials/1792584037017-jtsalw.jpg",
+    "thumbnailUrl": "/static/materials/1792584037017-jtsalw.jpg",
+    "dimensions": "250 x 250 x 22 mm",
+    "type": "Photographic Mineral Scan"
+  },
+  {
+    "id": "mat_16",
+    "name": "Material 16",
+    "file": "1792584050083-5kic7a.jpg",
+    "url": "/static/materials/1792584050083-5kic7a.jpg",
+    "thumbnailUrl": "/static/materials/1792584050083-5kic7a.jpg",
+    "dimensions": "250 x 250 x 22 mm",
+    "type": "Photographic Mineral Scan"
+  },
+  {
+    "id": "mat_17",
+    "name": "Material 17",
+    "file": "1792584076949-vy8ci.jpg",
+    "url": "/static/materials/1792584076949-vy8ci.jpg",
+    "thumbnailUrl": "/static/materials/1792584076949-vy8ci.jpg",
+    "dimensions": "250 x 250 x 22 mm",
+    "type": "Photographic Mineral Scan"
+  },
+  {
+    "id": "mat_18",
+    "name": "Material 18",
+    "file": "1792584094684-wo5wif.jpg",
+    "url": "/static/materials/1792584094684-wo5wif.jpg",
+    "thumbnailUrl": "/static/materials/1792584094684-wo5wif.jpg",
+    "dimensions": "250 x 250 x 22 mm",
+    "type": "Photographic Mineral Scan"
+  },
+  {
+    "id": "mat_19",
+    "name": "Material 19",
+    "file": "1792584110316-4bz7s.jpg",
+    "url": "/static/materials/1792584110316-4bz7s.jpg",
+    "thumbnailUrl": "/static/materials/1792584110316-4bz7s.jpg",
+    "dimensions": "250 x 250 x 22 mm",
+    "type": "Photographic Mineral Scan"
+  },
+  {
+    "id": "mat_20",
+    "name": "Material 20",
+    "file": "1792584126015-h3629.jpg",
+    "url": "/static/materials/1792584126015-h3629.jpg",
+    "thumbnailUrl": "/static/materials/1792584126015-h3629.jpg",
+    "dimensions": "250 x 250 x 22 mm",
+    "type": "Photographic Mineral Scan"
+  },
+  {
+    "id": "mat_21",
+    "name": "Material 21",
+    "file": "1792584141332-2txcx.jpg",
+    "url": "/static/materials/1792584141332-2txcx.jpg",
+    "thumbnailUrl": "/static/materials/1792584141332-2txcx.jpg",
+    "dimensions": "250 x 250 x 22 mm",
+    "type": "Photographic Mineral Scan"
+  },
+  {
+    "id": "mat_22",
+    "name": "Material 22",
+    "file": "1792584163031-mt938.jpg",
+    "url": "/static/materials/1792584163031-mt938.jpg",
+    "thumbnailUrl": "/static/materials/1792584163031-mt938.jpg",
+    "dimensions": "250 x 250 x 22 mm",
+    "type": "Photographic Mineral Scan"
+  },
+  {
+    "id": "mat_23",
+    "name": "Material 23",
+    "file": "1792584177133-nnpqao.jpg",
+    "url": "/static/materials/1792584177133-nnpqao.jpg",
+    "thumbnailUrl": "/static/materials/1792584177133-nnpqao.jpg",
+    "dimensions": "250 x 250 x 22 mm",
+    "type": "Photographic Mineral Scan"
+  },
+  {
+    "id": "mat_24",
+    "name": "Material 24",
+    "file": "1792584189465-ueh5ap.jpg",
+    "url": "/static/materials/1792584189465-ueh5ap.jpg",
+    "thumbnailUrl": "/static/materials/1792584189465-ueh5ap.jpg",
+    "dimensions": "250 x 250 x 22 mm",
+    "type": "Photographic Mineral Scan"
+  },
+  {
+    "id": "mat_25",
+    "name": "Material 25",
+    "file": "1792584207131-n7mdr5.jpg",
+    "url": "/static/materials/1792584207131-n7mdr5.jpg",
+    "thumbnailUrl": "/static/materials/1792584207131-n7mdr5.jpg",
+    "dimensions": "250 x 250 x 22 mm",
+    "type": "Photographic Mineral Scan"
+  },
+  {
+    "id": "mat_26",
+    "name": "Material 26",
+    "file": "1792584223031-69v0h8.jpg",
+    "url": "/static/materials/1792584223031-69v0h8.jpg",
+    "thumbnailUrl": "/static/materials/1792584223031-69v0h8.jpg",
+    "dimensions": "250 x 250 x 22 mm",
+    "type": "Photographic Mineral Scan"
+  },
+  {
+    "id": "mat_27",
+    "name": "Material 27",
+    "file": "1792584236264-pbk119.jpg",
+    "url": "/static/materials/1792584236264-pbk119.jpg",
+    "thumbnailUrl": "/static/materials/1792584236264-pbk119.jpg",
+    "dimensions": "250 x 250 x 22 mm",
+    "type": "Photographic Mineral Scan"
+  },
+  {
+    "id": "mat_28",
+    "name": "Material 28",
+    "file": "1792584252016-d4m0oa.jpg",
+    "url": "/static/materials/1792584252016-d4m0oa.jpg",
+    "thumbnailUrl": "/static/materials/1792584252016-d4m0oa.jpg",
+    "dimensions": "250 x 250 x 22 mm",
+    "type": "Photographic Mineral Scan"
+  },
+  {
+    "id": "mat_29",
+    "name": "Material 29",
+    "file": "1792584264164-5gbps9.jpg",
+    "url": "/static/materials/1792584264164-5gbps9.jpg",
+    "thumbnailUrl": "/static/materials/1792584264164-5gbps9.jpg",
+    "dimensions": "250 x 250 x 22 mm",
+    "type": "Photographic Mineral Scan"
+  },
+  {
+    "id": "mat_30",
+    "name": "Material 30",
+    "file": "1792584275581-fl9v2q.jpg",
+    "url": "/static/materials/1792584275581-fl9v2q.jpg",
+    "thumbnailUrl": "/static/materials/1792584275581-fl9v2q.jpg",
+    "dimensions": "250 x 250 x 22 mm",
+    "type": "Photographic Mineral Scan"
+  },
+  {
+    "id": "mat_31",
+    "name": "Material 31",
+    "file": "1792584291563-u8h9z.jpg",
+    "url": "/static/materials/1792584291563-u8h9z.jpg",
+    "thumbnailUrl": "/static/materials/1792584291563-u8h9z.jpg",
+    "dimensions": "250 x 250 x 22 mm",
+    "type": "Photographic Mineral Scan"
+  },
+  {
+    "id": "mat_32",
+    "name": "Material 32",
+    "file": "1792584304647-cnll68.jpg",
+    "url": "/static/materials/1792584304647-cnll68.jpg",
+    "thumbnailUrl": "/static/materials/1792584304647-cnll68.jpg",
+    "dimensions": "250 x 250 x 22 mm",
+    "type": "Photographic Mineral Scan"
+  },
+  {
+    "id": "mat_33",
+    "name": "Material 33",
+    "file": "1792584317347-7iakt.jpg",
+    "url": "/static/materials/1792584317347-7iakt.jpg",
+    "thumbnailUrl": "/static/materials/1792584317347-7iakt.jpg",
+    "dimensions": "250 x 250 x 22 mm",
+    "type": "Photographic Mineral Scan"
+  },
+  {
+    "id": "mat_34",
+    "name": "Material 34",
+    "file": "1792584330030-yupswm.jpg",
+    "url": "/static/materials/1792584330030-yupswm.jpg",
+    "thumbnailUrl": "/static/materials/1792584330030-yupswm.jpg",
+    "dimensions": "250 x 250 x 22 mm",
+    "type": "Photographic Mineral Scan"
+  },
+  {
+    "id": "mat_35",
+    "name": "Material 35",
+    "file": "1792584344265-cd4le4.jpg",
+    "url": "/static/materials/1792584344265-cd4le4.jpg",
+    "thumbnailUrl": "/static/materials/1792584344265-cd4le4.jpg",
+    "dimensions": "250 x 250 x 22 mm",
+    "type": "Photographic Mineral Scan"
+  },
+  {
+    "id": "mat_36",
+    "name": "Material 36",
+    "file": "1792584356063-zifm5d.jpg",
+    "url": "/static/materials/1792584356063-zifm5d.jpg",
+    "thumbnailUrl": "/static/materials/1792584356063-zifm5d.jpg",
+    "dimensions": "250 x 250 x 22 mm",
+    "type": "Photographic Mineral Scan"
+  },
+  {
+    "id": "mat_37",
+    "name": "Material 37",
+    "file": "1792584383683-3i952l.jpg",
+    "url": "/static/materials/1792584383683-3i952l.jpg",
+    "thumbnailUrl": "/static/materials/1792584383683-3i952l.jpg",
+    "dimensions": "250 x 250 x 22 mm",
+    "type": "Photographic Mineral Scan"
+  },
+  {
+    "id": "mat_38",
+    "name": "Material 38",
+    "file": "1792584406132-96or4xk.jpg",
+    "url": "/static/materials/1792584406132-96or4xk.jpg",
+    "thumbnailUrl": "/static/materials/1792584406132-96or4xk.jpg",
+    "dimensions": "250 x 250 x 22 mm",
+    "type": "Photographic Mineral Scan"
+  },
+  {
+    "id": "mat_39",
+    "name": "Material 39",
+    "file": "1792584426046-0n5l4s.jpg",
+    "url": "/static/materials/1792584426046-0n5l4s.jpg",
+    "thumbnailUrl": "/static/materials/1792584426046-0n5l4s.jpg",
+    "dimensions": "250 x 250 x 22 mm",
+    "type": "Photographic Mineral Scan"
+  },
+  {
+    "id": "mat_40",
+    "name": "Material 40",
+    "file": "1792584440413-8t6tbv.jpg",
+    "url": "/static/materials/1792584440413-8t6tbv.jpg",
+    "thumbnailUrl": "/static/materials/1792584440413-8t6tbv.jpg",
+    "dimensions": "250 x 250 x 22 mm",
+    "type": "Photographic Mineral Scan"
+  }
+]

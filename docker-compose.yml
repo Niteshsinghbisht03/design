@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  tile-studio-pro:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: tile-studio-pro-app
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - PORT=8000
+      - HOST=0.0.0.0
+    volumes:
+      - ./backend/static/materials:/app/backend/static/materials
+      - ./backend/static/uploads:/app/backend/static/uploads
+      - ./backend/app/data:/app/backend/app/data
+
