@@ -175,10 +175,37 @@ def mask_to_bezier_svg_path(
     return " ".join(path_parts)
 
 
+def analyze_image_properties(img_bgr: np.ndarray) -> dict:
+    """
+    Analyzes color saturation, 90th percentile saturation, and cross-channel RGB
+    standard deviation to distinguish black & white line drawings / sketches from
+    multi-colored ceramic tiles or photos.
+    """
+    hsv = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2HSV)
+    sat = hsv[:, :, 1]
+    mean_sat = float(np.mean(sat))
+    p90_sat = float(np.percentile(sat, 90))
+    rgb_std = float(np.std(img_bgr.astype(np.float32), axis=2).mean())
+
+    # Ceramic tile photos typically have mean_sat > 25 and p90_sat > 45,
+    # while B&W scans/sketches have mean_sat < 5 and p90_sat < 15.
+    is_colored = mean_sat > 14.0 or p90_sat > 35.0 or rgb_std > 8.0
+    detected_mode = "colored" if is_colored else "lineart"
+    suggested_symmetry = True if is_colored else False
+
+    return {
+        "detected_mode": detected_mode,
+        "suggested_symmetry": suggested_symmetry,
+        "mean_saturation": mean_sat,
+        "p90_saturation": p90_sat,
+        "rgb_channel_std": rgb_std,
+    }
+
+
 def vectorize_image_bytes(
     image_bytes: bytes,
-    mode: str = "lineart",
-    symmetric: bool = False,
+    mode: str = "auto",
+    symmetric: bool = None,
     canvas_size: int = 2048,
     tuck_px: int = 2,
 ) -> dict:
@@ -188,25 +215,36 @@ def vectorize_image_bytes(
     {
       "svg": "<svg ...>...</svg>",
       "region_count": int,
-      "mode": mode,
+      "mode": detected_or_requested_mode,
+      "requested_mode": mode,
+      "symmetric": bool,
       "width": canvas_size,
       "height": canvas_size
     }
     """
     nparr = np.frombuffer(image_bytes, np.uint8)
+    color_img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+    if color_img is None:
+        raise ValueError("Could not decode image bytes")
 
-    if mode == "lineart":
-        img = cv2.imdecode(nparr, cv2.IMREAD_GRAYSCALE)
-        if img is None:
-            raise ValueError("Could not decode image bytes")
+    # Center crop to 1:1 square if rectangular
+    h, w = color_img.shape[:2]
+    if h != w:
+        min_d = min(h, w)
+        top = (h - min_d) // 2
+        left = (w - min_d) // 2
+        color_img = color_img[top : top + min_d, left : left + min_d]
 
-        # Center crop to 1:1 square if rectangular
-        h, w = img.shape[:2]
-        if h != w:
-            min_d = min(h, w)
-            top = (h - min_d) // 2
-            left = (w - min_d) // 2
-            img = img[top : top + min_d, left : left + min_d]
+    # Automatic mode and symmetry detection
+    props = analyze_image_properties(color_img)
+    effective_mode = props["detected_mode"] if mode == "auto" else mode
+    if symmetric is None:
+        effective_symmetric = props["suggested_symmetry"] if mode == "auto" else (True if effective_mode == "colored" else False)
+    else:
+        effective_symmetric = bool(symmetric)
+
+    if effective_mode == "lineart":
+        img = cv2.cvtColor(color_img, cv2.COLOR_BGR2GRAY)
 
         ink_raw = 255 - img
         _, binary = cv2.threshold(ink_raw, 85, 255, cv2.THRESH_BINARY)
@@ -227,7 +265,7 @@ def vectorize_image_bytes(
         ink_clean_gray = np.where(mask_dilated > 0, ink_raw, 0)
         upscaled = cv2.resize(ink_clean_gray, (canvas_size, canvas_size), interpolation=cv2.INTER_CUBIC)
 
-        if symmetric:
+        if effective_symmetric:
             upscaled = enforce_d4_symmetry(upscaled).astype(np.uint8)
 
         blur_ink = cv2.GaussianBlur(upscaled, (9, 9), 0)
@@ -273,26 +311,18 @@ def vectorize_image_bytes(
             "svg": svg,
             "region_count": len(fill_paths),
             "mode": "lineart",
+            "requested_mode": mode,
+            "symmetric": effective_symmetric,
             "width": canvas_size,
             "height": canvas_size,
         }
 
     else:
         # Mode B: Colored Ceramic Tile
-        img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
-        if img is None:
-            raise ValueError("Could not decode image bytes")
-
-        # Center crop to 1:1 square if rectangular
-        h, w = img.shape[:2]
-        if h != w:
-            min_d = min(h, w)
-            top = (h - min_d) // 2
-            left = (w - min_d) // 2
-            img = img[top : top + min_d, left : left + min_d]
+        img = color_img
 
         rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB).astype(np.float32)
-        if symmetric:
+        if effective_symmetric:
             rgb = enforce_d4_symmetry(rgb)
 
         rgb = cv2.resize(rgb, (canvas_size, canvas_size), interpolation=cv2.INTER_CUBIC)
@@ -308,14 +338,14 @@ def vectorize_image_bytes(
         dist_cream = np.sqrt((R - 224) ** 2 + (G - 214) ** 2 + (B - 201) ** 2)
         is_beige = (~is_blue) & (~is_orange) & (dist_beige < dist_cream - 2.0)
 
-        beige_outer = clean_mask_pair(is_beige, symmetric=symmetric, blur_r=13)
-        orange_outer = clean_mask_pair(is_orange, symmetric=symmetric, blur_r=9)
-        blue_outer = clean_mask_pair(is_blue, symmetric=symmetric, blur_r=9)
+        beige_outer = clean_mask_pair(is_beige, symmetric=effective_symmetric, blur_r=13)
+        orange_outer = clean_mask_pair(is_orange, symmetric=effective_symmetric, blur_r=9)
+        blue_outer = clean_mask_pair(is_blue, symmetric=effective_symmetric, blur_r=9)
 
         border_thickness = 9.5
-        beige_inner = compute_smooth_inner_mask(beige_outer, border_thickness=border_thickness, symmetric=symmetric)
-        orange_inner = compute_smooth_inner_mask(orange_outer, border_thickness=border_thickness - 0.5, symmetric=symmetric)
-        blue_inner = compute_smooth_inner_mask(blue_outer, border_thickness=border_thickness, symmetric=symmetric)
+        beige_inner = compute_smooth_inner_mask(beige_outer, border_thickness=border_thickness, symmetric=effective_symmetric)
+        orange_inner = compute_smooth_inner_mask(orange_outer, border_thickness=border_thickness - 0.5, symmetric=effective_symmetric)
+        blue_inner = compute_smooth_inner_mask(blue_outer, border_thickness=border_thickness, symmetric=effective_symmetric)
 
         k_tuck = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (tuck_px * 2 + 1, tuck_px * 2 + 1))
 
@@ -344,7 +374,7 @@ def vectorize_image_bytes(
         if len(frame_fills) + len(petal_fills) + len(motif_fills) == 0:
             gray = cv2.cvtColor(rgb_smooth.astype(np.uint8), cv2.COLOR_RGB2GRAY)
             edges = cv2.Canny(gray, 25, 80)
-            if symmetric:
+            if effective_symmetric:
                 edges = ((enforce_d4_symmetry(edges) >= 30) * 255).astype(np.uint8)
             k_edge = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (5, 5))
             edges_dil = cv2.dilate(edges, k_edge)
@@ -361,6 +391,16 @@ def vectorize_image_bytes(
                         f'    <path id="segment-fill-{len(frame_fills)+1:02d}" data-name="Segment {len(frame_fills)+1}" d="{d_s}" fill="#ffffff" fill-rule="evenodd" />'
                     )
 
+            edge_outline_d = mask_to_bezier_svg_path(edges_dil, approx_eps=1.8)
+            outlines_svg = f'    <path id="universal-outline" d="{edge_outline_d}" />'
+        else:
+            beige_outline = mask_to_bezier_svg_path(beige_outer, 2.2) + " " + mask_to_bezier_svg_path(beige_inner, 2.2)
+            orange_outline = mask_to_bezier_svg_path(orange_outer, 2.0) + " " + mask_to_bezier_svg_path(orange_inner, 2.0)
+            blue_outline = mask_to_bezier_svg_path(blue_outer, 2.0) + " " + mask_to_bezier_svg_path(blue_inner, 2.0)
+            outlines_svg = f"""    <path id="frame-outline" d="{beige_outline}" />
+    <path id="petals-outline" d="{orange_outline}" />
+    <path id="motifs-outline" d="{blue_outline}" />"""
+
         fill_paths = [
             f'    <rect id="background-fill" data-name="Background" width="{canvas_size}" height="{canvas_size}" fill="#ffffff" />',
             *frame_fills,
@@ -368,19 +408,13 @@ def vectorize_image_bytes(
             *motif_fills,
         ]
 
-        beige_outline = mask_to_bezier_svg_path(beige_outer, 2.2) + " " + mask_to_bezier_svg_path(beige_inner, 2.2)
-        orange_outline = mask_to_bezier_svg_path(orange_outer, 2.0) + " " + mask_to_bezier_svg_path(orange_inner, 2.0)
-        blue_outline = mask_to_bezier_svg_path(blue_outer, 2.0) + " " + mask_to_bezier_svg_path(blue_inner, 2.0)
-
         svg = f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {canvas_size} {canvas_size}" width="100%" height="100%">
   <title>Vectorized Fillable Tile Pattern</title>
   <g id="fillable-color-regions">
 {chr(10).join(fill_paths)}
   </g>
   <g id="tile-outlines" fill="#000000" fill-rule="evenodd">
-    <path id="frame-outline" d="{beige_outline}" />
-    <path id="petals-outline" d="{orange_outline}" />
-    <path id="motifs-outline" d="{blue_outline}" />
+{outlines_svg}
   </g>
 </svg>"""
 
@@ -388,6 +422,8 @@ def vectorize_image_bytes(
             "svg": svg,
             "region_count": len(fill_paths),
             "mode": "colored",
+            "requested_mode": mode,
+            "symmetric": effective_symmetric,
             "width": canvas_size,
             "height": canvas_size,
         }

@@ -10,13 +10,14 @@ router = APIRouter(prefix="/vectorize", tags=["vectorize"])
 @router.post("")
 async def vectorize_tile(
     file: UploadFile = File(...),
-    mode: str = Query("lineart", pattern="^(lineart|colored)$"),
-    symmetric: bool = Query(False),
+    mode: str = Query("auto", pattern="^(auto|lineart|colored)$"),
+    symmetric: bool = Query(None),
     format: str = Query("json", pattern="^(json|svg)$")
 ):
     """
     Vectorize an uploaded raster tile image (JPEG, PNG, WebP) into scalable SVG
     with uniform outlines and 2px tucked color fill regions.
+    Supports auto-detecting colored ceramic tiles vs line art sketches.
     """
     try:
         content = await file.read()
@@ -36,8 +37,9 @@ async def vectorize_tile(
             "success": True,
             "status": "success",
             "filename": file.filename,
-            "mode": mode,
-            "symmetric": symmetric,
+            "mode": result["mode"],
+            "requested_mode": result.get("requested_mode", mode),
+            "symmetric": result["symmetric"],
             "region_count": result["region_count"],
             "svg": result["svg"],
             "width": result["width"],

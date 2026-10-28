@@ -35,11 +35,16 @@ export async function saveCustomPattern(pattern) {
   return await res.json();
 }
 
-export async function vectorizeImage(file, mode = 'lineart', symmetric = false) {
+export async function vectorizeImage(file, mode = 'auto', symmetric = null) {
   const formData = new FormData();
   formData.append('file', file);
   
-  const res = await fetch(`/api/vectorize?mode=${mode}&symmetric=${symmetric}&format=json`, {
+  let url = `/api/vectorize?mode=${encodeURIComponent(mode)}&format=json`;
+  if (symmetric !== null && symmetric !== undefined) {
+    url += `&symmetric=${Boolean(symmetric)}`;
+  }
+  
+  const res = await fetch(url, {
     method: 'POST',
     body: formData,
   });

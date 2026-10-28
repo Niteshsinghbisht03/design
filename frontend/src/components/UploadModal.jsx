@@ -26,12 +26,47 @@ export default function UploadModal({ isOpen, onClose }) {
   const [isLoading, setIsLoading] = useState(false);
 
   // Vectorizer parameters
-  const [vectorizeMode, setVectorizerMode] = useState('lineart'); // 'lineart' | 'colored'
-  const [enforceD4, setEnforceD4] = useState(false);
+  const [vectorizeMode, setVectorizerMode] = useState('auto'); // 'auto' | 'lineart' | 'colored'
+  const [enforceD4, setEnforceD4] = useState(null); // null (auto) | true | false
+  const [autoDetectedType, setAutoDetectedType] = useState(null); // 'colored' | 'lineart' | null
 
   const fileInputRef = useRef(null);
 
   if (!isOpen) return null;
+
+  // Client-side quick saturation check for immediate UI guidance
+  const detectClientImageMode = (file) => {
+    const url = URL.createObjectURL(file);
+    const img = new Image();
+    img.onload = () => {
+      try {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        const size = 64;
+        canvas.width = size;
+        canvas.height = size;
+        ctx.drawImage(img, 0, 0, size, size);
+        const data = ctx.getImageData(0, 0, size, size).data;
+        let totalSat = 0;
+        const count = size * size;
+        for (let i = 0; i < data.length; i += 4) {
+          const r = data[i], g = data[i + 1], b = data[i + 2];
+          const max = Math.max(r, g, b);
+          const min = Math.min(r, g, b);
+          const sat = max === 0 ? 0 : (max - min) / max;
+          totalSat += sat;
+        }
+        const avgSat = totalSat / count;
+        setAutoDetectedType(avgSat > 0.08 ? 'colored' : 'lineart');
+      } catch {
+        setAutoDetectedType(null);
+      } finally {
+        URL.revokeObjectURL(url);
+      }
+    };
+    img.onerror = () => URL.revokeObjectURL(url);
+    img.src = url;
+  };
 
   // Handle direct SVG text or file
   const handleSvgTextParse = (svgContent, fileName = 'Custom Tile') => {
@@ -72,6 +107,7 @@ export default function UploadModal({ isOpen, onClose }) {
 
     if (isSvg) {
       setActiveTab('svg');
+      setAutoDetectedType(null);
       const reader = new FileReader();
       reader.onload = (e) => {
         handleSvgTextParse(e.target.result, file.name);
@@ -81,6 +117,7 @@ export default function UploadModal({ isOpen, onClose }) {
     } else {
       // Raster image (JPEG / PNG)
       setActiveTab('raster');
+      detectClientImageMode(file);
     }
   };
 
@@ -119,7 +156,8 @@ export default function UploadModal({ isOpen, onClose }) {
       };
 
       setParsedPattern(newPattern);
-      showToast(`Tile successfully vectorized into ${parsed.regions.length} fillable regions!`);
+      const modeLabel = result.mode === 'colored' ? 'Color Ceramic Mode' : 'Line Art Mode';
+      showToast(`Tile successfully vectorized into ${parsed.regions.length} fillable regions! (${modeLabel})`);
     } catch (err) {
       console.error('Vectorization API error:', err);
       setError(err.message || 'Vectorization failed. Ensure backend server is running.');
@@ -214,6 +252,17 @@ export default function UploadModal({ isOpen, onClose }) {
           {/* Raster Vectorizer Settings */}
           {activeTab === 'raster' && (
             <div className="vectorizer-settings-box">
+              {autoDetectedType && (
+                <div className={`auto-detect-badge ${autoDetectedType}`}>
+                  <Sparkles size={14} />
+                  <span>
+                    {autoDetectedType === 'colored'
+                      ? 'AI Auto-Detected: Colored Ceramic Tile (Multi-part frame, petals, motifs & D4 symmetry)'
+                      : 'AI Auto-Detected: Black & White Line Art / Sketch (Line work & fillable negative spaces)'}
+                  </span>
+                </div>
+              )}
+
               <div className="settings-row">
                 <label className="settings-label">Processing Engine:</label>
                 <div className="engine-options">
@@ -221,11 +270,11 @@ export default function UploadModal({ isOpen, onClose }) {
                     <input
                       type="radio"
                       name="vecMode"
-                      value="lineart"
-                      checked={vectorizeMode === 'lineart'}
-                      onChange={() => setVectorizerMode('lineart')}
+                      value="auto"
+                      checked={vectorizeMode === 'auto'}
+                      onChange={() => setVectorizerMode('auto')}
                     />
-                    <span>Mode A: Black Line Art / Drawing (Leaves, Petals, Sketches)</span>
+                    <span><strong>Auto-Detect (Recommended)</strong> — Automatically analyzes tile colors and linework</span>
                   </label>
                   <label className="radio-label">
                     <input
@@ -235,7 +284,17 @@ export default function UploadModal({ isOpen, onClose }) {
                       checked={vectorizeMode === 'colored'}
                       onChange={() => setVectorizerMode('colored')}
                     />
-                    <span>Mode B: Segmented Color Ceramic Tile</span>
+                    <span><strong>Mode B: Segmented Color Ceramic Tile</strong> — Separate frame, petals, motifs & background</span>
+                  </label>
+                  <label className="radio-label">
+                    <input
+                      type="radio"
+                      name="vecMode"
+                      value="lineart"
+                      checked={vectorizeMode === 'lineart'}
+                      onChange={() => setVectorizerMode('lineart')}
+                    />
+                    <span><strong>Mode A: Black Line Art / Drawing</strong> — Hand sketches, ink outlines, leaf drawings</span>
                   </label>
                 </div>
               </div>
@@ -245,10 +304,14 @@ export default function UploadModal({ isOpen, onClose }) {
                 <label className="checkbox-label">
                   <input
                     type="checkbox"
-                    checked={enforceD4}
+                    checked={
+                      enforceD4 === null
+                        ? (vectorizeMode === 'colored' || (vectorizeMode === 'auto' && autoDetectedType !== 'lineart'))
+                        : enforceD4
+                    }
                     onChange={(e) => setEnforceD4(e.target.checked)}
                   />
-                  <span>Enforce D4 Tile Symmetry (4 Rotations × 2 Reflections — leave unchecked for hand drawings)</span>
+                  <span>Enforce D4 Tile Symmetry (4 Rotations × 2 Reflections — cleans scanner skew & glaze noise)</span>
                 </label>
               </div>
 
